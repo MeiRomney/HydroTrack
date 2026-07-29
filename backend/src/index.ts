@@ -1,0 +1,52 @@
+import type { Request, Response, NextFunction } from "express";
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Simple request logger (helpful while learning/debugging)
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
+
+// Health check route
+app.get("/api/health", (_req: Request, res: Response) => {
+  res.json({ status: "ok" });
+});
+
+// TODO: mount your feature routes here as you build them, e.g.
+// import channelRoutes from './routes/channels';
+// app.use('/api/channels', channelRoutes);
+//
+// import batchRoutes from './routes/batches';
+// app.use('/api/batches', batchRoutes);
+//
+// import readingRoutes from './routes/readings';
+// app.use('/api/readings', readingRoutes);
+//
+// import harvestRoutes from './routes/harvests';
+// app.use('/api/harvests', harvestRoutes);
+
+// 404 handler — must come after all real routes
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
+});
+
+// Central error handler — must have 4 args for Express to treat it as an error handler
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal server error" });
+});
+
+app.listen(PORT, () => {
+  console.log(`HydroTrack backend running on http://localhost:${PORT}`);
+});
