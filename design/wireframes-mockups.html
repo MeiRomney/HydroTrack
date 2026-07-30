@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HydroTrack — Wireframes &amp; Mockups</title>
+    <style>
+      :root {
+        --sage: #4c7a5b;
+        --sage-dark: #365a41;
+        --teal: #2f8a82;
+        --teal-light: #e4f2f0;
+        --cream: #faf8f3;
+        --ink: #26302b;
+        --muted: #6b776f;
+        --line: #d8ddd5;
+        --amber: #d98a3d;
+        --red: #c1503f;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+        background: #efeee8;
+        color: var(--ink);
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        background: var(--ink);
+        color: #fff;
+        padding: 14px 24px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        z-index: 10;
+      }
+      .topbar h1 {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 20px 0 0;
+      }
+      .tab-btn {
+        background: transparent;
+        border: 1px solid #556;
+        color: #cfd6cf;
+        padding: 6px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .tab-btn.active {
+        background: var(--teal);
+        border-color: var(--teal);
+        color: #fff;
+      }
+      .sub-btn {
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        padding: 5px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        margin-right: 6px;
+      }
+      .sub-btn.active {
+        background: var(--sage);
+        color: #fff;
+        border-color: var(--sage);
+      }
+      .subbar {
+        padding: 12px 24px;
+        background: #f4f3ee;
+        border-bottom: 1px solid var(--line);
+      }
+      .canvas {
+        padding: 32px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .page {
+        display: none;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .page.active {
+        display: block;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+
+      /* ---------- WIREFRAME (low-fi, grayscale) ---------- */
+      .wf {
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
+      .wf-topnav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        border-bottom: 2px solid #999;
+      }
+      .wf-box {
+        border: 2px solid #999;
+        background: #f2f2f2;
+        color: #777;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 6px;
+      }
+      .wf-label {
+        position: absolute;
+        font-size: 10px;
+        color: #999;
+      }
+      .wf-grid {
+        display: grid;
+        gap: 12px;
+        padding: 20px;
+      }
+      .wf-btn {
+        border: 2px solid #999;
+        background: #e8e8e8;
+        padding: 8px 14px;
+        font-size: 11px;
+        color: #555;
+        display: inline-block;
+      }
+      .wf-line {
+        border-bottom: 2px dashed #bbb;
+        height: 1px;
+      }
+      .wf-table-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+        border-bottom: 1px solid #ccc;
+        font-size: 11px;
+        color: #666;
+      }
+
+      /* ---------- MOCKUP (high-fi) ---------- */
+      .mk {
+        color: var(--ink);
+      }
+      .mk-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        background: var(--sage-dark);
+        color: #fff;
+      }
+      .mk-nav .brand {
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.2px;
+      }
+      .mk-nav .brand span {
+        color: #9fd8b8;
+      }
+      .mk-crumbs {
+        padding: 14px 24px 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .mk-h1 {
+        padding: 4px 24px 16px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .mk-body {
+        padding: 0 24px 24px;
+      }
+      .card {
+        background: var(--cream);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .stat-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .stat-num {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--sage-dark);
+      }
+      .stat-label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .section-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--sage-dark);
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+      .batch-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 10px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+        align-items: center;
+      }
+      .batch-row.head {
+        font-weight: 600;
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--sage);
+      }
+      .pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .pill.growing {
+        background: var(--teal-light);
+        color: var(--teal);
+      }
+      .pill.germ {
+        background: #fdf0de;
+        color: var(--amber);
+      }
+      .pill.harvest {
+        background: #e9e5f5;
+        color: #6b4fa0;
+      }
+      .btn {
+        background: var(--sage);
+        color: #fff;
+        border: none;
+        padding: 9px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn.ghost {
+        background: #fff;
+        color: var(--sage-dark);
+        border: 1px solid var(--sage);
+      }
+      .task {
+        display: flex;
+        justify-content: space-between;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .task .when {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .form-row {
+        margin-bottom: 14px;
+      }
+      .form-row label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--sage-dark);
+        margin-bottom: 5px;
+      }
+      .form-row input,
+      .form-row select {
+        width: 100%;
+        padding: 9px 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font-size: 13px;
+        background: #fff;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .chart-placeholder {
+        height: 120px;
+        background: linear-gradient(180deg, var(--teal-light), #fff);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: flex;
+        align-items: flex-end;
+        gap: 4px;
+        padding: 10px;
+      }
+      .chart-placeholder div {
+        background: var(--teal);
+        flex: 1;
+        border-radius: 3px 3px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <h1>HydroTrack &mdash; design artifacts</h1>
+      <button
+        class="tab-btn active"
+        onclick="setFidelity('wireframe')"
+        id="tab-wireframe"
+      >
+        Wireframe (low-fi)
+      </button>
+      <button class="tab-btn" onclick="setFidelity('mockup')" id="tab-mockup">
+        Mockup (high-fi)
+      </button>
+    </div>
+
+    <div class="subbar">
+      <button
+        class="sub-btn active"
+        onclick="setPage('dashboard')"
+        id="sub-dashboard"
+      >
+        Dashboard
+      </button>
+      <button class="sub-btn" onclick="setPage('batches')" id="sub-batches">
+        Batches
+      </button>
+      <button class="sub-btn" onclick="setPage('reading')" id="sub-reading">
+        Log reading
+      </button>
+    </div>
+
+    <div class="canvas">
+      <!-- ===================== WIREFRAME VIEW ===================== -->
+      <div class="view active" id="view-wireframe">
+        <div class="page active wf" data-page="dashboard">
+          <div class="wf-topnav">
+            <div class="wf-box" style="width: 100px; height: 24px">LOGO</div>
+            <div style="display: flex; gap: 8px">
+              <div class="wf-box" style="width: 70px; height: 24px">Nav 1</div>
+              <div class="wf-box" style="width: 70px; height: 24px">Nav 2</div>
+              <div class="wf-box" style="width: 70px; height: 24px">Nav 3</div>
+            </div>
+          </div>
+          <div class="wf-grid" style="grid-template-columns: 1fr 1fr 1fr">
+            <div class="wf-box" style="height: 60px">stat 1</div>
+            <div class="wf-box" style="height: 60px">stat 2</div>
+            <div class="wf-box" style="height: 60px">stat 3</div>
+          </div>
+          <div
+            class="wf-grid"
+            style="grid-template-columns: 2fr 1fr; padding-top: 0"
+          >
+            <div class="wf-box" style="height: 160px">
+              chart / active batches list placeholder
+            </div>
+            <div class="wf-box" style="height: 160px">
+              upcoming tasks list placeholder
+            </div>
+          </div>
+        </div>
+
+        <div class="page wf" data-page="batches">
+          <div class="wf-topnav">
+            <div class="wf-box" style="width: 100px; height: 24px">LOGO</div>
+            <div class="wf-btn">+ New batch</div>
+          </div>
+          <div style="padding: 20px">
+            <div
+              class="wf-table-row"
+              style="font-weight: bold; border-bottom: 2px solid #999"
+            >
+              <div>crop / channel</div>
+              <div>planted</div>
+              <div>status</div>
+              <div>action</div>
+            </div>
+            <div class="wf-table-row">
+              <div>row placeholder</div>
+              <div>date</div>
+              <div>tag</div>
+              <div>view &gt;</div>
+            </div>
+            <div class="wf-table-row">
+              <div>row placeholder</div>
+              <div>date</div>
+              <div>tag</div>
+              <div>view &gt;</div>
+            </div>
+            <div class="wf-table-row">
+              <div>row placeholder</div>
+              <div>date</div>
+              <div>tag</div>
+              <div>view &gt;</div>
+            </div>
+            <div class="wf-table-row">
+              <div>row placeholder</div>
+              <div>date</div>
+              <div>tag</div>
+              <div>view &gt;</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page wf" data-page="reading">
+          <div class="wf-topnav">
+            <div class="wf-box" style="width: 100px; height: 24px">LOGO</div>
+            <div class="wf-box" style="width: 70px; height: 24px">Back</div>
+          </div>
+          <div class="wf-grid" style="grid-template-columns: 1fr 1fr">
+            <div class="wf-box" style="height: 40px">Batch (select)</div>
+            <div class="wf-box" style="height: 40px">Date</div>
+            <div class="wf-box" style="height: 40px">pH value</div>
+            <div class="wf-box" style="height: 40px">EC value</div>
+            <div class="wf-box" style="height: 40px">Water temp</div>
+            <div class="wf-box" style="height: 40px">Notes</div>
+          </div>
+          <div style="padding: 0 20px 20px">
+            <div class="wf-btn">Save reading</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== MOCKUP VIEW ===================== -->
+      <div class="view" id="view-mockup">
+        <div class="page active mk" data-page="dashboard">
+          <div class="mk-nav">
+            <div class="brand">Hydro<span>Track</span></div>
+            <div
+              style="font-size: 13px; display: flex; gap: 18px; color: #dcebe1"
+            >
+              <span style="color: #fff; font-weight: 600">Dashboard</span
+              ><span>Batches</span><span>Channels</span>
+            </div>
+          </div>
+          <div class="mk-h1">Good morning, Romney</div>
+          <div class="mk-body">
+            <div class="stat-row">
+              <div class="card">
+                <div class="stat-num">6</div>
+                <div class="stat-label">Active batches</div>
+              </div>
+              <div class="card">
+                <div class="stat-num">2</div>
+                <div class="stat-label">Ready to harvest</div>
+              </div>
+              <div class="card">
+                <div class="stat-num">14.2 kg</div>
+                <div class="stat-label">Yield this month</div>
+              </div>
+            </div>
+            <div
+              style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px"
+            >
+              <div class="card">
+                <div class="section-title">Reservoir pH — channel A</div>
+                <div class="chart-placeholder">
+                  <div style="height: 60%"></div>
+                  <div style="height: 75%"></div>
+                  <div style="height: 55%"></div>
+                  <div style="height: 80%"></div>
+                  <div style="height: 68%"></div>
+                  <div style="height: 90%"></div>
+                  <div style="height: 72%"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="section-title">Upcoming tasks</div>
+                <div class="task">
+                  <span>Check pH — Channel B</span
+                  ><span class="when">Today</span>
+                </div>
+                <div class="task">
+                  <span>Top up nutrients</span
+                  ><span class="when">Tomorrow</span>
+                </div>
+                <div class="task">
+                  <span>Harvest — Kale batch 12</span
+                  ><span class="when">In 3 days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page mk" data-page="batches">
+          <div class="mk-nav">
+            <div class="brand">Hydro<span>Track</span></div>
+            <div
+              style="font-size: 13px; display: flex; gap: 18px; color: #dcebe1"
+            >
+              <span>Dashboard</span
+              ><span style="color: #fff; font-weight: 600">Batches</span
+              ><span>Channels</span>
+            </div>
+          </div>
+          <div
+            class="mk-h1"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <span>Crop batches</span>
+            <button class="btn">+ New batch</button>
+          </div>
+          <div class="mk-body">
+            <div class="card" style="padding: 0; overflow: hidden">
+              <div class="batch-row head">
+                <div>Crop / channel</div>
+                <div>Planted</div>
+                <div>Status</div>
+                <div></div>
+              </div>
+              <div class="batch-row">
+                <div>Lettuce — Channel A</div>
+                <div>Jul 12</div>
+                <div><span class="pill growing">Growing</span></div>
+                <div>
+                  <a
+                    href="#"
+                    class="btn ghost"
+                    style="
+                      text-decoration: none;
+                      display: inline-block;
+                      padding: 5px 12px;
+                    "
+                    >View</a
+                  >
+                </div>
+              </div>
+              <div class="batch-row">
+                <div>Basil — Channel B</div>
+                <div>Jul 18</div>
+                <div><span class="pill germ">Germinating</span></div>
+                <div>
+                  <a
+                    href="#"
+                    class="btn ghost"
+                    style="
+                      text-decoration: none;
+                      display: inline-block;
+                      padding: 5px 12px;
+                    "
+                    >View</a
+                  >
+                </div>
+              </div>
+              <div class="batch-row">
+                <div>Kale — Channel C</div>
+                <div>Jun 30</div>
+                <div><span class="pill harvest">Ready</span></div>
+                <div>
+                  <a
+                    href="#"
+                    class="btn ghost"
+                    style="
+                      text-decoration: none;
+                      display: inline-block;
+                      padding: 5px 12px;
+                    "
+                    >View</a
+                  >
+                </div>
+              </div>
+              <div class="batch-row">
+                <div>Lettuce — Channel D</div>
+                <div>Jul 22</div>
+                <div><span class="pill growing">Growing</span></div>
+                <div>
+                  <a
+                    href="#"
+                    class="btn ghost"
+                    style="
+                      text-decoration: none;
+                      display: inline-block;
+                      padding: 5px 12px;
+                    "
+                    >View</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page mk" data-page="reading">
+          <div class="mk-nav">
+            <div class="brand">Hydro<span>Track</span></div>
+            <div style="font-size: 13px; color: #dcebe1">
+              &larr; Back to batch
+            </div>
+          </div>
+          <div class="mk-crumbs">Batches / Lettuce — Channel A</div>
+          <div class="mk-h1">Log a reading</div>
+          <div class="mk-body">
+            <div class="card" style="max-width: 520px">
+              <div class="form-grid">
+                <div class="form-row">
+                  <label>Batch</label
+                  ><select>
+                    <option>Lettuce — Channel A</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label>Date</label><input type="text" value="Jul 30, 2026" />
+                </div>
+                <div class="form-row">
+                  <label>pH</label><input type="text" placeholder="e.g. 6.1" />
+                </div>
+                <div class="form-row">
+                  <label>EC (mS/cm)</label
+                  ><input type="text" placeholder="e.g. 1.8" />
+                </div>
+                <div class="form-row">
+                  <label>Water temp (&deg;C)</label
+                  ><input type="text" placeholder="e.g. 22" />
+                </div>
+                <div class="form-row">
+                  <label>Notes</label
+                  ><input type="text" placeholder="Optional" />
+                </div>
+              </div>
+              <button class="btn">Save reading</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let fidelity = "wireframe";
+      let page = "dashboard";
+
+      function setFidelity(f) {
+        fidelity = f;
+        document
+          .getElementById("tab-wireframe")
+          .classList.toggle("active", f === "wireframe");
+        document
+          .getElementById("tab-mockup")
+          .classList.toggle("active", f === "mockup");
+        document
+          .getElementById("view-wireframe")
+          .classList.toggle("active", f === "wireframe");
+        document
+          .getElementById("view-mockup")
+          .classList.toggle("active", f === "mockup");
+      }
+
+      function setPage(p) {
+        page = p;
+        ["dashboard", "batches", "reading"].forEach((id) => {
+          document
+            .getElementById("sub-" + id)
+            .classList.toggle("active", id === p);
+        });
+        document.querySelectorAll(".page").forEach((el) => {
+          el.classList.toggle("active", el.getAttribute("data-page") === p);
+        });
+      }
+    </script>
+  </body>
+</html>
