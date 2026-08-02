@@ -1,7 +1,10 @@
-import type { Request, Response, NextFunction } from "express";
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
+import express, {
+  type Request,
+  type Response,
+  type NextFunction,
+} from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -35,6 +38,14 @@ app.get("/api/health", (_req: Request, res: Response) => {
 //
 // import harvestRoutes from './routes/harvests';
 // app.use('/api/harvests', harvestRoutes);
+
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./swagger.js";
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+import batchRoutes from "./routes/batch.routes.js";
+app.use("/api/batches", batchRoutes);
 
 // 404 handler — must come after all real routes
 app.use((req: Request, res: Response) => {

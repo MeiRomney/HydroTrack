@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Channel {
+  id       Int      @id @default(autoincrement())
+  name     String
+  capacity Int
+  status   String   @default("empty") // empty | active | needs_cleaning
+  batches  Batch[]
+}
+
+model Batch {
+  id                  Int       @id @default(autoincrement())
+  cropType            String
+  plantedDate         DateTime
+  expectedHarvestDate DateTime
+  status              String    @default("germinating") // germinating | growing | harvested
+  channelId           Int
+  channel             Channel   @relation(fields: [channelId], references: [id])
+  readings            Reading[]
+  harvests            Harvest[]
+}
+
+model Reading {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @default(now())
+  pH         Float
+  ec         Float
+  waterTemp  Float
+  notes      String?
+  batchId    Int
+  batch      Batch    @relation(fields: [batchId], references: [id])
+}
+
+model Harvest {
+  id          Int      @id @default(autoincrement())
+  harvestDate DateTime @default(now())
+  yieldKg     Float
+  notes       String?
+  batchId     Int
+  batch       Batch    @relation(fields: [batchId], references: [id])
+}
