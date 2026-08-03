@@ -44,9 +44,15 @@ import { swaggerSpec } from "./swagger.js";
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-import batchRoutes from "./routes/batch.routes.js";
-app.use("/api/batches", batchRoutes);
+import batchRoutes from "./routes/batches.routes.js";
+import channelRoutes from "./routes/channels.routes.js";
+import readingRoutes from "./routes/readings.routes.js";
+import harvestRoutes from "./routes/harvests.routes.js";
 
+app.use("/api/batches", batchRoutes);
+app.use("/api/channels", channelRoutes);
+app.use("/api/readings", readingRoutes);
+app.use("/api/harvests", harvestRoutes);
 // 404 handler — must come after all real routes
 app.use((req: Request, res: Response) => {
   res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });

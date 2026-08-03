@@ -1,17 +1,5 @@
-import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
 import type { Batch } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-dotenv.config();
-
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL is required to connect to the database.");
-}
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: databaseUrl }),
-});
+import { prisma } from "../prisma.client.js";
 
 // Shape of data needed to create a batch (id/relations are generated or set separately)
 export interface CreateBatchInput {
