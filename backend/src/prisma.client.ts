@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 
 dotenv.config();
 
@@ -9,8 +9,8 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is required to connect to the database.");
 }
 
-export const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: databaseUrl }),
-});
+const adapter = new PrismaLibSql({ url: databaseUrl });
+
+export const prisma = new PrismaClient({ adapter });
 
 export default prisma;

@@ -59,8 +59,11 @@ app.use((req: Request, res: Response) => {
 });
 
 // Central error handler — must have 4 args for Express to treat it as an error handler
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack);
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  console.error("--- ERROR ---");
+  console.error("Message:", err.message);
+  console.error("Code:", err.code);
+  console.error("Meta:", err.meta);
   res.status(500).json({ error: "Internal server error" });
 });
 
