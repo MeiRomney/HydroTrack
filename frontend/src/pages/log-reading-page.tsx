@@ -1,7 +1,60 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import type { Batch } from "../types";
+import React, { useEffect, useState } from "react";
+import { createReading, getBatch } from "../api/endpoints";
 
 export default function LogReadingPage() {
   const { id } = useParams<{ id: string }>();
+  const batchId = Number(id);
+  const navigate = useNavigate();
+
+  const [batch, setBatch] = useState<Batch | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [pH, setPH] = useState("");
+  const [ec, setEc] = useState("");
+  const [waterTemp, setWaterTemp] = useState("");
+  const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if (!batchId) return;
+    getBatch(batchId)
+      .then(setBatch)
+      .catch(() => setError("Could not load this batch."))
+      .finally(() => setLoading(false));
+  }, [batchId]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!pH || !ec || !waterTemp) {
+      setError("pH, Ec, and water tempe are required.");
+      return;
+    }
+    setSubmitting(true);
+    setError(null);
+    try {
+      await createReading({
+        batchId,
+        date: new Date(date) as any,
+        pH: Number(pH),
+        ec: Number(ec),
+        waterTemp: Number(waterTemp),
+        notes: notes || undefined,
+      });
+      navigate(`/batches/${batchId}`);
+    } catch {
+      setError("Failed to save reading. Check the values and try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (loading) return <p className="p-6 text-neutral-500">Loading...</p>;
+  if (!batch)
+    return <p className="p-6 text-red-600">{error ?? "Batch not found."}</p>;
 
   return (
     <div className="max-w-md mx-auto p-6">
