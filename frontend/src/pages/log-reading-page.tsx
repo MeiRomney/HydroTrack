@@ -59,14 +59,22 @@ export default function LogReadingPage() {
   return (
     <div className="max-w-md mx-auto p-6">
       <Link
-        to={`/batches/${id}`}
+        to={`/batches/${batchId}`}
         className="text-sm text-emerald-700 hover:underline"
       >
         &larr; Back to batch
       </Link>
-      <h1 className="text-xl font-semibold text-neutral-900 mt-3">
+
+      <p className="text-xs text-neutral-500 mt-3">
+        Batches / {batch.cropType} -{" "}
+        {batch.channel?.name ?? `Channel #${batch.channelId}`}
+      </p>
+      <h1 className="text-xl font-semibold text-neutral-900 mt-1 mb-6">
         Log a reading
       </h1>
+
+      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+
       <p className="text-neutral-500 text-sm mt-2">
         Form coming soon — this page is wired into routing for batch #{id},
         ready to build next.
