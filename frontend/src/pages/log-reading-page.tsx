@@ -75,10 +75,10 @@ export default function LogReadingPage() {
 
       {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
 
-      <p className="text-neutral-500 text-sm mt-2">
-        Form coming soon — this page is wired into routing for batch #{id},
-        ready to build next.
-      </p>
+      <form
+        onSubmit={handleSubmit}
+        className="border border-neutral-200 bg-stone-50 rounded-xl p-5 space-y-4"
+      ></form>
     </div>
   );
 }
