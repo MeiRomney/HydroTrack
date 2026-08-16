@@ -78,7 +78,9 @@ export default function LogReadingPage() {
       <form
         onSubmit={handleSubmit}
         className="border border-neutral-200 bg-stone-50 rounded-xl p-5 space-y-4"
-      ></form>
+      >
+        <div className="grid grid-cols-2 gap-4"></div>
+      </form>
     </div>
   );
 }
