@@ -80,7 +80,11 @@ export default function LogReadingPage() {
         className="border border-neutral-200 bg-stone-50 rounded-xl p-5 space-y-4"
       >
         <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2"></div>
+          <div className="col-span-2">
+            <label className="block text-xs font-semibold text-emeral-800 mb-1">
+              Date
+            </label>
+          </div>
         </div>
       </form>
     </div>
