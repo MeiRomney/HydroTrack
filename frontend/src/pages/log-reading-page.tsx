@@ -91,6 +91,19 @@ export default function LogReadingPage() {
               className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
             />
           </div>
+          <div>
+            <label className="block text-xs font-semibold text-emerald-800 mb-1">
+              pH
+            </label>
+            <input
+              type="number"
+              step="0.1"
+              value={pH}
+              onChange={(e) => setPH(e.target.value)}
+              placeholder="e.g. 6.1"
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
+            />
+          </div>
         </div>
       </form>
     </div>
