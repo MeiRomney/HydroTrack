@@ -3,6 +3,7 @@ import HomePage from "./pages/home-page";
 import BatchesPage from "./pages/batches-page";
 import BatchDetailPage from "./pages/batch-detail-page";
 import LogReadingPage from "./pages/log-reading-page";
+import RecordHarvestPage from "./pages/record-harvest-page";
 
 function Nav() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -32,6 +33,10 @@ export default function App() {
         <Route path="/batches" element={<BatchesPage />} />
         <Route path="/batches/:id" element={<BatchDetailPage />} />
         <Route path="/batches/:id/log-reading" element={<LogReadingPage />} />
+        <Route
+          path="/batches/:id/record-harvest"
+          element={<RecordHarvestPage />}
+        />
       </Routes>
     </>
   );

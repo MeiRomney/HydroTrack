@@ -46,6 +46,12 @@ export default function BatchDetailPage() {
         >
           + Log reading
         </Link>
+        <Link
+          to={`/batches/${batch.id}/record-harvest`}
+          className="bg-white border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-sm font-semibold px-4 py-2 rounded-lg"
+        >
+          + Record harvest
+        </Link>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mb-8">
