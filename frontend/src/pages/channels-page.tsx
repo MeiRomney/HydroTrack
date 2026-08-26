@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import type { Channel } from "../types";
 
 const STATUS_STYLE: Record<string, string> = {
   active: "bg-teal-50 text-teal-700",
@@ -7,5 +8,7 @@ const STATUS_STYLE: Record<string, string> = {
 };
 
 export default function ChannelsPage() {
+  const [channels, setChannels] = useState<Channel[]>([]);
+
   return <div>channels-page</div>;
 }
