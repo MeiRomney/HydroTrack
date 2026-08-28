@@ -10,6 +10,13 @@ const STATUS_STYLE: Record<string, string> = {
 export default function ChannelsPage() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+
+  const [name, setName] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [status, setStatus] = useState("empty");
+  const [submitting, setSubmitting] = useState(false);
 
   return <div>channels-page</div>;
 }
