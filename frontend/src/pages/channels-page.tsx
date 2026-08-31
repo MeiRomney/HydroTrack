@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Channel } from "../types";
-import { getChannels } from "../api/endpoints";
+import { createChannel, getChannels } from "../api/endpoints";
 
 const STATUS_STYLE: Record<string, string> = {
   active: "bg-teal-50 text-teal-700",
@@ -29,6 +29,26 @@ export default function ChannelsPage() {
         ),
       )
       .finally(() => setLoading(false));
+  }
+
+  async function handleCreate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name || !capacity) return;
+    setSubmitting(true);
+    try {
+      await createChannel({ name, capacity: Number(capacity), status });
+      setName("");
+      setCapacity("");
+      setStatus("empty");
+      setShowForm(false);
+      loadAll();
+    } catch {
+      setError(
+        "Failed to create channel. Check all fields are filled correctly.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return <div>channels-page</div>;
