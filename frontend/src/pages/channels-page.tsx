@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Channel } from "../types";
-import { createChannel, getChannels } from "../api/endpoints";
+import { createChannel, deleteChannel, getChannels } from "../api/endpoints";
 
 const STATUS_STYLE: Record<string, string> = {
   active: "bg-teal-50 text-teal-700",
@@ -50,6 +50,25 @@ export default function ChannelsPage() {
       setSubmitting(false);
     }
   }
+
+  async function handleDelete(id: number) {
+    if (
+      !confirm("Delete this channel? Batches assigned to it may be affected.")
+    )
+      return;
+
+    try {
+      await deleteChannel(id);
+      loadAll();
+    } catch {
+      setError(
+        "Could not delete channel - it may still have batches assigned to it.",
+      );
+    }
+  }
+
+  if (loading)
+    return <p className="p-6 text-neutral-500">Loading channels...</p>;
 
   return <div>channels-page</div>;
 }
