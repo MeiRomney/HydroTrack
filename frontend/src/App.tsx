@@ -4,6 +4,7 @@ import BatchesPage from "./pages/batches-page";
 import BatchDetailPage from "./pages/batch-detail-page";
 import LogReadingPage from "./pages/log-reading-page";
 import RecordHarvestPage from "./pages/record-harvest-page";
+import ChannelsPage from "./pages/channels-page";
 
 function Nav() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -20,6 +21,9 @@ function Nav() {
       <NavLink to="/batches" className={linkClass}>
         Batches
       </NavLink>
+      <NavLink to="/channels" className={linkClass}>
+        Channels
+      </NavLink>
     </nav>
   );
 }
@@ -31,6 +35,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/batches" element={<BatchesPage />} />
+        <Route path="/channels" element={<ChannelsPage />} />
         <Route path="/batches/:id" element={<BatchDetailPage />} />
         <Route path="/batches/:id/log-reading" element={<LogReadingPage />} />
         <Route

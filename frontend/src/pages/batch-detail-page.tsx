@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import type { Batch, Reading, Harvest } from "../types";
-import { getBatch, getReadings, getHarvests } from "../api/endpoints";
+import type { Batch, Reading, Harvest, Channel } from "../types";
+import {
+  getBatch,
+  getReadings,
+  getHarvests,
+  getChannels,
+  updateBatch,
+} from "../api/endpoints";
+
+const STATUS_OPTIONS = ["germinating", "growing", "harvested"];
 
 export default function BatchDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -10,20 +18,69 @@ export default function BatchDetailPage() {
   const [batch, setBatch] = useState<Batch | null>(null);
   const [readings, setReadings] = useState<Reading[]>([]);
   const [harvests, setHarvests] = useState<Harvest[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const [editing, setEditing] = useState(false);
+  const [cropType, setCropType] = useState("");
+  const [channelId, setChannelId] = useState("");
+  const [plantedDate, setPlantedDate] = useState("");
+  const [expectedHarvestDate, setExpectedHarvestDate] = useState("");
+  const [status, setStatus] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  function loadAll() {
     if (!batchId) return;
-    Promise.all([getBatch(batchId), getReadings(batchId), getHarvests(batchId)])
-      .then(([b, r, h]) => {
+    setLoading(true);
+    Promise.all([
+      getBatch(batchId),
+      getReadings(batchId),
+      getHarvests(batchId),
+      getChannels(),
+    ])
+      .then(([b, r, h, c]) => {
         setBatch(b);
         setReadings(r);
         setHarvests(h);
+        setChannels(c);
+        setCropType(b.cropType);
+        setChannelId(String(b.channelId));
+        setPlantedDate(b.plantedDate.slice(0, 10));
+        setExpectedHarvestDate(b.expectedHarvestDate.slice(0, 10));
+        setStatus(b.status);
       })
       .catch(() => setError("Could not load this batch."))
       .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [batchId]);
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await updateBatch(batchId, {
+        cropType,
+        channelId: Number(channelId),
+        plantedDate,
+        expectedHarvestDate,
+        status,
+      } as any);
+      setEditing(false);
+      loadAll();
+    } catch {
+      setError(
+        "Failed to update batch. Check all fields are filled correctly.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   if (loading) return <p className="p-6 text-neutral-500">Loading batch…</p>;
   if (error || !batch)
@@ -40,31 +97,120 @@ export default function BatchDetailPage() {
           {batch.cropType} —{" "}
           {batch.channel?.name ?? `Channel #${batch.channelId}`}
         </h1>
-        <Link
-          to={`/batches/${batch.id}/log-reading`}
-          className="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-lg"
-        >
-          + Log reading
-        </Link>
-        <Link
-          to={`/batches/${batch.id}/record-harvest`}
-          className="bg-white border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-sm font-semibold px-4 py-2 rounded-lg"
-        >
-          + Record harvest
-        </Link>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setEditing((e) => !e)}
+            className="bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-50 text-sm font-semibold px-4 py-2 rounded-lg"
+          >
+            {editing ? "Cancel" : "Edit"}
+          </button>
+          <Link
+            to={`/batches/${batch.id}/log-reading`}
+            className="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-lg"
+          >
+            + Log reading
+          </Link>
+          <Link
+            to={`/batches/${batch.id}/record-harvest`}
+            className="bg-white border border-emerald-700 text-emerald-800 hover:bg-emerald-50 text-sm font-semibold px-4 py-2 rounded-lg"
+          >
+            + Record harvest
+          </Link>
+        </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <InfoCard label="Status" value={batch.status} />
-        <InfoCard
-          label="Planted"
-          value={new Date(batch.plantedDate).toLocaleDateString()}
-        />
-        <InfoCard
-          label="Expected harvest"
-          value={new Date(batch.expectedHarvestDate).toLocaleDateString()}
-        />
-      </div>
+      {editing ? (
+        <form
+          onSubmit={handleSave}
+          className="border border-neutral-200 bg-stone-50 rounded-xl p-5 grid grid-cols-2 gap-4 mb-8"
+        >
+          <div>
+            <label className="block text-xs font-semibold text-emerald-800 mb-1">
+              Crop type
+            </label>
+            <input
+              value={cropType}
+              onChange={(e) => setCropType(e.target.value)}
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-emerald-800 mb-1">
+              Channel
+            </label>
+            <select
+              value={channelId}
+              onChange={(e) => setChannelId(e.target.value)}
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
+            >
+              {channels.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-emerald-800 mb-1">
+              Planted date
+            </label>
+            <input
+              type="date"
+              value={plantedDate}
+              onChange={(e) => setPlantedDate(e.target.value)}
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-emerald-800 mb-1">
+              Expected harvest date
+            </label>
+            <input
+              type="date"
+              value={expectedHarvestDate}
+              onChange={(e) => setExpectedHarvestDate(e.target.value)}
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-emerald-800 mb-1">
+              Status
+            </label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white"
+            >
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-span-2">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2 rounded-lg"
+            >
+              {submitting ? "Saving..." : "Save changes"}
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <InfoCard label="Status" value={batch.status} />
+          <InfoCard
+            label="Planted"
+            value={new Date(batch.plantedDate).toLocaleDateString()}
+          />
+          <InfoCard
+            label="Expected harvest"
+            value={new Date(batch.expectedHarvestDate).toLocaleDateString()}
+          />
+        </div>
+      )}
 
       <h2 className="text-sm font-semibold uppercase tracking-wide text-emerald-800 mb-3">
         Readings
