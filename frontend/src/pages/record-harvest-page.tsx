@@ -38,7 +38,7 @@ export default function RecordHarvestPage() {
     try {
       await createHarvest({
         batchId,
-        harvestDate: new Date(harvestDate) as any,
+        harvestDate: new Date(harvestDate),
         yieldKg: Number(yieldKg),
         notes: notes || undefined,
       });

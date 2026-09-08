@@ -38,7 +38,7 @@ export default function LogReadingPage() {
     try {
       await createReading({
         batchId,
-        date: new Date(date) as any,
+        date: new Date(date),
         pH: Number(pH),
         ec: Number(ec),
         waterTemp: Number(waterTemp),

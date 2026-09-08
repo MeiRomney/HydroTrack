@@ -11,6 +11,10 @@ import {
 
 const STATUS_OPTIONS = ["germinating", "growing", "harvested"];
 
+function formatDateForInput(value: string | Date): string {
+  return new Date(value).toISOString().slice(0, 10);
+}
+
 export default function BatchDetailPage() {
   const { id } = useParams<{ id: string }>();
   const batchId = Number(id);
@@ -46,8 +50,8 @@ export default function BatchDetailPage() {
         setChannels(c);
         setCropType(b.cropType);
         setChannelId(String(b.channelId));
-        setPlantedDate(b.plantedDate.slice(0, 10));
-        setExpectedHarvestDate(b.expectedHarvestDate.slice(0, 10));
+        setPlantedDate(formatDateForInput(b.plantedDate));
+        setExpectedHarvestDate(formatDateForInput(b.expectedHarvestDate));
         setStatus(b.status);
       })
       .catch(() => setError("Could not load this batch."))
@@ -67,10 +71,10 @@ export default function BatchDetailPage() {
       await updateBatch(batchId, {
         cropType,
         channelId: Number(channelId),
-        plantedDate,
-        expectedHarvestDate,
+        plantedDate: new Date(plantedDate),
+        expectedHarvestDate: new Date(expectedHarvestDate),
         status,
-      } as any);
+      });
       setEditing(false);
       loadAll();
     } catch {

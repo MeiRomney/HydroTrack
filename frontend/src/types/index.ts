@@ -1,3 +1,5 @@
+export type DateValue = string | Date;
+
 export interface Channel {
   id: number;
   name: string;
@@ -9,8 +11,8 @@ export interface Channel {
 export interface Batch {
   id: number;
   cropType: string;
-  plantedDate: string;
-  expectedHarvestDate: string;
+  plantedDate: DateValue;
+  expectedHarvestDate: DateValue;
   status: string;
   channelId: number;
   channel?: Channel;
@@ -20,7 +22,7 @@ export interface Batch {
 
 export interface Reading {
   id: number;
-  date: string;
+  date: DateValue;
   pH: number;
   ec: number;
   waterTemp: number;
@@ -31,9 +33,33 @@ export interface Reading {
 
 export interface Harvest {
   id: number;
-  harvestDate: string;
+  harvestDate: DateValue;
   yieldKg: number;
   notes?: string;
   batchId: number;
   batch?: Batch;
+}
+
+export interface BatchInput {
+  cropType?: string;
+  plantedDate?: DateValue;
+  expectedHarvestDate?: DateValue;
+  status?: string;
+  channelId?: number;
+}
+
+export interface ReadingInput {
+  batchId: number;
+  date?: DateValue;
+  pH?: number;
+  ec?: number;
+  waterTemp?: number;
+  notes?: string;
+}
+
+export interface HarvestInput {
+  batchId: number;
+  harvestDate?: DateValue;
+  yieldKg?: number;
+  notes?: string;
 }
