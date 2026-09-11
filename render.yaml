@@ -1,0 +1,23 @@
+databases:
+  - name: hydrotrack-db
+    databaseName: hydrotrack
+    user: hydrotrack
+    plan: free
+
+services:
+  - type: web
+    name: hydrotrack-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci && npm run build && npx prisma migrate deploy
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hydrotrack-db
+          property: connectionString
+      - key: CORS_ORIGIN
+        sync: false
+      - key: PUBLIC_API_URL
+        sync: false

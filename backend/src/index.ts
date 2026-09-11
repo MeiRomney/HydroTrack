@@ -9,10 +9,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT || 3001);
+const allowedOrigin = process.env.CORS_ORIGIN;
 
 // Middleware
-app.use(cors());
+app.use(cors(allowedOrigin ? { origin: allowedOrigin } : undefined));
 app.use(express.json());
 
 // Simple request logger (helpful while learning/debugging)
@@ -67,6 +68,6 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-app.listen(Number(PORT), "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`HydroTrack backend running on http://0.0.0.0:${PORT}`);
 });
