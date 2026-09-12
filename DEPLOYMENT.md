@@ -12,7 +12,6 @@ Push the repository to GitHub. The deployment blueprint is `render.yaml`.
 2. Confirm the `hydrotrack-db` PostgreSQL database and `hydrotrack-api` web service.
 3. After the first deploy, open the web service settings and copy its public URL.
 4. Set these environment variables on `hydrotrack-api`:
-
    - `CORS_ORIGIN`: the final Vercel URL, for example `https://hydrotrack.vercel.app`
    - `PUBLIC_API_URL`: the Render API URL, for example `https://hydrotrack-api.onrender.com`
 
