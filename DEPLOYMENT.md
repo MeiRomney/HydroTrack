@@ -1,6 +1,36 @@
 # HydroTrack Deployment
 
-This project is configured for a Render backend and Vercel frontend.
+This project supports a Vercel frontend, a Render backend, and either Neon or
+Render Postgres for the database. Neon is the recommended low-cost database
+option because it can be created separately without using a Render Blueprint.
+
+## Recommended low-cost setup: Neon + Render Web Service + Vercel
+
+Use this path if you do not want Render to provision the database:
+
+1. Create a project in [Neon](https://neon.com/) and copy its pooled PostgreSQL
+   connection string. It should begin with `postgresql://` and include SSL
+   parameters supplied by Neon.
+2. In Render, choose **New > Web Service**, not **New > Blueprint**.
+3. Select this repository and configure:
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm ci && npm run build && npm run db:migrate`
+   - **Start Command:** `npm start`
+   - **Plan:** `Free` for testing or a paid plan for an always-on service
+4. Add these Render environment variables:
+   - `DATABASE_URL`: the Neon connection string
+   - `CORS_ORIGIN`: the final Vercel URL
+   - `PUBLIC_API_URL`: the Render API URL
+5. Deploy the frontend on Vercel with root directory `frontend` and set
+   `VITE_API_URL` to the Render API URL.
+
+This project already uses Prisma's PostgreSQL adapter, so no code change is
+needed to use Neon. Render's free web service sleeps after inactivity, which
+can make the first request take about a minute.
+
+Render's free PostgreSQL database is not a good long-term alternative: Render
+currently documents a 30-day expiration for free databases. If you use Neon,
+do not deploy the `hydrotrack-db` database from `render.yaml`.
 
 ## 1. Push the repository
 
