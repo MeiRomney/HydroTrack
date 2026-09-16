@@ -11,6 +11,7 @@ Use this path if you do not want Render to provision the database:
 1. Create a project in [Neon](https://neon.com/) and copy its pooled PostgreSQL
    connection string. It should begin with `postgresql://` and include SSL
    parameters supplied by Neon.
+   <!-- postgresql://neondb_owner:npg_17ugTaOzWXPF@ep-proud-cherry-b5log9q8-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require -->
 2. In Render, choose **New > Web Service**, not **New > Blueprint**.
 3. Select this repository and configure:
    - **Root Directory:** `backend`
