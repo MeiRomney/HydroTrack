@@ -22,6 +22,7 @@ Use this path if you do not want Render to provision the database:
    - `DATABASE_URL`: the Neon connection string
    - `CORS_ORIGIN`: the final Vercel URL
    - `PUBLIC_API_URL`: the Render API URL
+   <!-- https://hydrotrack-fpqm.onrender.com/ -->
 5. Deploy the frontend on Vercel with root directory `frontend` and set
    `VITE_API_URL` to the Render API URL.
 
