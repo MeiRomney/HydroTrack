@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT || 3001);
-const allowedOrigin = process.env.CORS_ORIGIN;
+const allowedOrigin = process.env.CORS_ORIGIN?.trim().replace(/\/+$/, "");
 
 // Middleware
 app.use(cors(allowedOrigin ? { origin: allowedOrigin } : undefined));
