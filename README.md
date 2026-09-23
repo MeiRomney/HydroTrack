@@ -4,6 +4,9 @@ HydroTrack is a hydroponic crop monitoring application for tracking channels, ba
 
 ## Overview
 
+<img width="1917" height="905" alt="image" src="https://github.com/user-attachments/assets/799e0c5d-acc3-49ca-8456-4aae339a82ce" />
+
+
 The app is designed to support:
 
 - Creating and managing hydroponic channels
